@@ -2,45 +2,38 @@
 % Please edit documentation in R/plotPlate.R
 \name{plotPlate}
 \alias{plotPlate}
-\title{Plot a Plate Layout}
+\title{Plot a Single Plate}
 \usage{
 plotPlate(
   plate_tbl,
   fill_var,
   circle_size = 5,
   log_transform = FALSE,
-  viridis_palette = "viridis"
+  viridis_palette = "viridis",
+  fill_limits = NULL,
+  show_legend = TRUE
 )
 }
 \arguments{
-\item{plate_tbl}{A \strong{tibble} as returned by \code{\link[=readPlate]{readPlate()}}.}
+\item{plate_tbl}{Tibble containing one or more plates (see \code{\link[=plotPlate]{plotPlate()}}).}
 
-\item{fill_var}{\code{character(1)}. Name of a column in \code{plate_tbl}
-(e.g. \code{"colony.size"} or \code{"colony.value"}) to map to fill.}
+\item{fill_var}{Column to map to colour.}
 
-\item{circle_size}{\code{numeric(1)}. Size of each well circle. Default \code{5}.}
+\item{circle_size}{Point size for each well.  Default 5.}
 
-\item{log_transform}{\code{logical(1)}. If \code{TRUE}, apply \code{log10()} to the fill variable. Default \code{FALSE}.}
+\item{log_transform}{Logical; if TRUE use log10 of \code{fill_var}.}
 
-\item{viridis_palette}{\code{character(1)}. Name of a viridis palette (one of
-\code{"viridis"}, \code{"magma"}, \code{"plasma"}, \code{"inferno"}, \code{"cividis"}). Default \code{"viridis"}.}
+\item{viridis_palette}{Viridis option (\code{"viridis"}, \code{"magma"}, …). Default \code{"viridis"}.}
+
+\item{fill_limits}{Numeric length-2 or NULL.  When non-NULL the colour scale
+is fixed to these limits.}
+
+\item{show_legend}{Logical; hide legend if FALSE.  Useful when combining many
+plates.}
 }
 \value{
-A \code{ggplot} object with fixed 127:85 aspect ratio and left-side legend.
+A \code{ggplot} object.
 }
 \description{
-Given a plate table in Logan format (as returned by \code{\link[=readPlate]{readPlate()}}),
-draws one circle per well arranged by column (\code{colID}) and row (\code{rowID}),
-and colours each well by a chosen variable, optionally log10-transformed,
-using a viridis-derived palette. The plot panel maintains a fixed aspect ratio,
-the legend is placed on the left (15\% width), and axis titles are removed
-while tick labels are shown in gray50 at each row/column position.
-}
-\examples{
-\dontrun{
-tbl <- readPlate(system.file("extdata/tmp.csv", package = "petadex"))
-plotPlate(tbl, fill_var = "colony.value", circle_size = 4,
-          log_transform = TRUE, viridis_palette = "magma")
-}
-
+Plot a Single Plate
 }
