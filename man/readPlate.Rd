@@ -7,23 +7,23 @@
 readPlate(file)
 }
 \arguments{
-\item{file}{`character(1)`. Path to the CSV file.
-Defaults to the bundled example file shipped with **petadex**:
-`system.file("extdata", "tmp.csv", package = "petadex")`.}
+\item{file}{\code{character(1)}. Path to the CSV file.
+Defaults to the bundled example file shipped with \strong{petadex}:
+\code{system.file("extdata", "tmp.csv", package = "petadex")}.}
 }
 \value{
-A [`tibble`][tibble::tibble] with 16 columns:
+A \code{\link[tibble:tibble]{tibble}} with 16 columns:
 \describe{
-  \item{p, c, r}{integer. Plate, Column and Row indices.}
-  \item{gene, plasmid, constructID, twist_order}{character. Meta‑data describing the expressed construct.}
-  \item{experiment, BHET, timepoint, construct}{character. Assay identifiers.}
-  \item{colony.size}{integer. Raw colony size in pixels.}
-  \item{colony.value, intensity.norm.neg.ctrl}{double. Normalised phenotypes.}
-  \item{DNAseq, ORFseq}{factor. Full nucleotide sequences.}
+\item{p, c, r}{integer. Plate, Column and Row indices.}
+\item{gene, plasmid, constructID, twist_order}{character. Meta‑data describing the expressed construct.}
+\item{experiment, BHET, timepoint, construct}{character. Assay identifiers.}
+\item{colony.size}{integer. Raw colony size in pixels.}
+\item{colony.value, intensity.norm.neg.ctrl}{double. Normalised phenotypes.}
+\item{DNAseq, ORFseq}{factor. Full nucleotide sequences.}
 }
 }
 \description{
-A convenience wrapper around **readr** that ensures the correct column
+A convenience wrapper around \strong{readr} that ensures the correct column
 types and provides a friendly error message if the file is missing.
 }
 \examples{

@@ -3,3 +3,8 @@
 .RData
 .Ruserdata
 *.Rproj
+
+*tmp*
+*TMP*
+*local*
+*LOCAL*
