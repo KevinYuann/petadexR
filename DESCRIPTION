@@ -1,12 +1,25 @@
 Package: petadexR
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: PETadexR: Data Exploration and Analysis Tools for Plastic‑Degrading Enzyme Sequences
+Version: 0.0.1
+Authors@R:
+    person("Artem", "Babaian", email = "ababaian@example.com", role = c("aut", "cre")),
+    person("Collaborator", "Brown", email = "brownlab@example.com", role = "ctb")
+Description:
+    Plastics degrade into micro‑ and nanoplastics (MNPs) that bioaccumulate in
+    ecosystems and human tissues. PETadexR unites     petabase‑scale computational
+    biology with high‑throughput functional genomics to discover and characterize
+    novel plastic‑degrading enzymes (PETases) with superior kinetics, stability,
+    and low‑toxicity byproducts.
+License: AGPL-3
 Encoding: UTF-8
 LazyData: true
+Imports:
+    dplyr,
+    ggplot2,
+    tidyr,
+    readr
+Suggests:
+    testthat (>= 3.2.0)
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
