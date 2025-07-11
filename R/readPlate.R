@@ -16,12 +16,25 @@
 #'   \item{colony.value, intensity.norm.neg.ctrl}{double. Normalised phenotypes.}
 #'   \item{DNAseq, ORFseq}{factor. Full nucleotide sequences.}
 #' }
+#'
+#' After loading the file, columns are renamed to the canonical **petadexR**
+#' schema.  The `timepoint` column can contain
+#'
+#' * `<number>[D|d]`   – days
+#' * `<number>[H|h]`   – hours
+#' * `<number>[M|m]`   – minutes
+#' * bare `<number>`   – hours
+#'
+#' Values are converted to **hours** (numeric, fractional for minutes) and a
+#' companion column `time_unit` is inserted _immediately after_ `timepoint`,
+#' recording the original unit (`"day"`, `"hour"`, or `"minute"`).
+#'
 #' @export
 #'
 #' @examples
 #' tbl <- readPlate()
 #' dplyr::glimpse(tbl)
-readPlate <- function(file){
+readPlate <- function(file) {
 
   if (!file.exists(file)) {
     usethis::ui_stop("File '{file}' does not exist.")
@@ -41,13 +54,14 @@ readPlate <- function(file){
         twist_order               = readr::col_factor(),
         experiment                = readr::col_character(),
         BHET                      = readr::col_factor(),
-        timepoint                 = readr::col_factor(),
+        timepoint                 = readr::col_character(),   # <- read as char
         construct                 = readr::col_character(),
         colony.size               = readr::col_integer(),
         colony.value              = readr::col_double(),
         intensity.norm.neg.ctrl   = readr::col_double(),
         DNAseq                    = readr::col_factor(),
-        ORFseq                    = readr::col_factor() )
+        ORFseq                    = readr::col_factor()
+      )
     )
 
   colnames(plate.tbl) <- c("plateID", "colID", "rowID",
@@ -56,6 +70,49 @@ readPlate <- function(file){
                            "timepoint", "construct",
                            "colony.size", "colony.value", "intensity.norm.neg.ctrl",
                            "DNAseq", "ORFseq")
+
+  ## --------------------------------------------------------------------
+  ##  Parse `timepoint`  (new block)
+  ## --------------------------------------------------------------------
+  tp_raw   <- stringr::str_trim(plate.tbl$timepoint)
+  is_blank <- is.na(tp_raw) | tp_raw == ""
+
+  # match number (int/float) + optional unit char
+  mat <- stringr::str_match(tp_raw,
+                            "^([0-9]+(?:\\.[0-9]+)?)\\s*([DdHhMm]?)$")
+
+  bad <- !is_blank & is.na(mat[, 1])
+  if (any(bad)) {
+    usethis::ui_stop(
+      "Unrecognised `timepoint` value(s): ",
+      paste(unique(tp_raw[bad]), collapse = ", ")
+    )
+  }
+
+  val  <- as.numeric(mat[, 2])
+  unit <- tolower(mat[, 3])
+  unit[unit == ""] <- "h"                 # default → hours
+
+  tp_hours <- dplyr::case_when(
+    unit == "d" ~ val * 24,
+    unit == "h" ~ val,
+    unit == "m" ~ val / 60,
+    TRUE        ~ NA_real_
+  )
+
+  time_unit <- dplyr::case_when(
+    unit == "d" ~ "day",
+    unit == "h" ~ "hour",
+    unit == "m" ~ "minute",
+    TRUE        ~ NA_character_
+  )
+
+  plate.tbl <- plate.tbl |>
+    dplyr::mutate(
+      timepoint = tp_hours,
+      time_unit = time_unit
+    ) |>
+    dplyr::relocate(time_unit, .after = timepoint)
 
   return(plate.tbl)
 }

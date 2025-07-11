@@ -15,25 +15,17 @@ plotPlate(
 )
 }
 \arguments{
-\item{plate_tbl}{Tibble containing one or more plates (see \code{\link[=plotPlate]{plotPlate()}}).}
+\item{fill_limits}{\code{numeric(2)} or \code{NULL}.  If not‐NULL, fixes the lower /
+upper limits of the colour palette and uses \emph{identical legend breaks}.}
 
-\item{fill_var}{Column to map to colour.}
-
-\item{circle_size}{Point size for each well.  Default 5.}
-
-\item{log_transform}{Logical; if TRUE use log10 of \code{fill_var}.}
-
-\item{viridis_palette}{Viridis option (\code{"viridis"}, \code{"magma"}, …). Default \code{"viridis"}.}
-
-\item{fill_limits}{Numeric length-2 or NULL.  When non-NULL the colour scale
-is fixed to these limits.}
-
-\item{show_legend}{Logical; hide legend if FALSE.  Useful when combining many
-plates.}
+\item{show_legend}{\code{logical(1)}.  If \code{FALSE} the legend is suppressed.  This
+lets a wrapper display a single shared legend.}
 }
 \value{
-A \code{ggplot} object.
+A \code{ggplot2} object.
 }
 \description{
-Plot a Single Plate
+Generates a plate map for one \code{plateID}, colouring wells by a chosen
+variable.  When a caller supplies \code{fill_limits}, those limits (and matching
+breaks) are used so that several plates can share a common colour scale.
 }

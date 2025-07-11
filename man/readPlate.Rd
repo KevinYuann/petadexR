@@ -21,6 +21,19 @@ A \code{\link[tibble:tibble]{tibble}} with 16 columns:
 \item{colony.value, intensity.norm.neg.ctrl}{double. Normalised phenotypes.}
 \item{DNAseq, ORFseq}{factor. Full nucleotide sequences.}
 }
+
+After loading the file, columns are renamed to the canonical \strong{petadexR}
+schema.  The \code{timepoint} column can contain
+\itemize{
+\item \verb{<number>[D|d]}   – days
+\item \verb{<number>[H|h]}   – hours
+\item \verb{<number>[M|m]}   – minutes
+\item bare \verb{<number>}   – hours
+}
+
+Values are converted to \strong{hours} (numeric, fractional for minutes) and a
+companion column \code{time_unit} is inserted \emph{immediately after} \code{timepoint},
+recording the original unit (\code{"day"}, \code{"hour"}, or \code{"minute"}).
 }
 \description{
 A convenience wrapper around \strong{readr} that ensures the correct column
