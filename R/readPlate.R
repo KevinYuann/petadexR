@@ -114,5 +114,7 @@ readPlate <- function(file) {
     ) |>
     dplyr::relocate(time_unit, .after = timepoint)
 
+  plate.tbl <- plate.tbl[ !duplicated(plate.tbl), ]
+
   return(plate.tbl)
 }
