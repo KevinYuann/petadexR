@@ -1,8 +1,8 @@
-#' Normalise (rescale) a measurement column to plate postive-controls
+#' Zero (subtract) the background based on plate negative-control
 #'
-#' `normalizePlate()` rescales a numeric measurement column (default
-#' **`colony.value`**) by dividing every value in a plate table by the
-#' **mean value observed in positive-control wells**.
+#' `zeroPlate()` rescales a numeric measurement column (default
+#' **`colony.value`**) by subtract every value in a plate table by the
+#' **mean value observed in control wells**.
 #'
 #' Control wells are defined by a match between **`normalize.to`** and
 #' the contents of the **`gene`** column.  Normalisation is performed
@@ -20,7 +20,7 @@
 #' @param suffix `character(1)` – suffix appended to create the new
 #'   column (`"<value.col>_<suffix>"`).  **Default:** `"norm"`.
 #' @param nfunc `character(1)` – normalization function to be applied
-#'   **Default:** `"divide"` or `"subtract"`
+#'   **Default:** `"subtract"` or `"divide"`
 #'
 #' @return *plate.tbl* plus one extra numeric column
 #'   `<value.col>_<suffix>` holding the normalised values
@@ -38,15 +38,15 @@
 #' raw_tbl <- readPlate("my_plate.csv")
 #'
 #' # Normalise colony.value to wells whose gene is "WT"
-#' norm_tbl <- normalizePlate(raw_tbl, normalize.to = "WT")
+#' norm_tbl <- zeroPlate(raw_tbl, normalize.to = "WT")
 #' }
 #'
 #' @export
-normalizePlate <- function(plate.tbl,
+zeroPlate      <- function(plate.tbl,
                            value.col    = "colony.value",
                            normalize.to,
                            suffix       = "norm",
-                           nfunc        = "divide") {
+                           nfunc        = "subtract") {
 
   ## ── sanity checks ────────────────────────────────────────────────────
   stopifnot(
@@ -65,7 +65,7 @@ normalizePlate <- function(plate.tbl,
     usethis::ui_stop("Column '{value.col}' not found in input.")
 
   if (!is.numeric(plate.tbl[[value.col]]))
-    usethis::ui_stop("Column '{value.col}' must be numeric.")
+    usethis::ui_stop("Column '{value.col}' must be numeric.")/
 
   ## ── compute control means per plate/media/timepoint ──────────────────
   ctrl_means <- plate.tbl |>
@@ -87,7 +87,7 @@ normalizePlate <- function(plate.tbl,
     )
 
   ## ── join & normalise ─────────────────────────────────────────────────
-  if (nfunc == 'divide'){
+  if (nfunc == 'division'){
     out <- plate.tbl |>
       dplyr::left_join(ctrl_means,
                        by = c("plateID", "media", "timepoint")) |>
@@ -99,7 +99,7 @@ normalizePlate <- function(plate.tbl,
         )
       ) |>
       dplyr::select(-ctrl_mean)
-    } else if (nfunc == 'subtract'){
+  } else if (nfunc == 'subtract'){
     out <- plate.tbl |>
       dplyr::left_join(ctrl_means,
                        by = c("plateID", "media", "timepoint")) |>
@@ -114,5 +114,5 @@ normalizePlate <- function(plate.tbl,
       "One or more control means were zero; corresponding normalised values set to NA."
     )
 
-  return(out)
+  out
 }

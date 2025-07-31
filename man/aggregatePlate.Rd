@@ -21,7 +21,7 @@ SD, and N columns for every variable listed in \code{value.cols}.
 \description{
 Collapses replicate wells produced by \code{\link[=readPlate]{readPlate()}} into a single
 summary row per experimental condition, defined by the combination of
-\strong{plateID, media, timepoint, and constructID}.  The user supplies the
+\strong{plateID, media, timepoint, gene, and plasmid}.  The user supplies the
 measurement columns to aggregate (defaults are \strong{colony.size} and
 \strong{colony.value}); for each of those columns the function appends three
 new variables: \verb{<name>_mean}, \verb{<name>_sd}, and \verb{<name>_n}

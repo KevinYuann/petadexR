@@ -2,7 +2,7 @@
 #'
 #' Collapses replicate wells produced by [`readPlate()`] into a single
 #' summary row per experimental condition, defined by the combination of
-#' **plateID, media, timepoint, and constructID**.  The user supplies the
+#' **plateID, media, timepoint, gene, and plasmid**.  The user supplies the
 #' measurement columns to aggregate (defaults are **colony.size** and
 #' **colony.value**); for each of those columns the function appends three
 #' new variables: `<name>_mean`, `<name>_sd`, and `<name>_n`
@@ -34,7 +34,7 @@ aggregatePlate <- function(plate.tbl,
   ## ── sanity checks ──────────────────────────────────────────────────────
   stopifnot(is.data.frame(plate.tbl))
 
-  key_cols      <- c("plateID", "media", "timepoint", "constructID")
+  key_cols      <- c("plateID", "media", "timepoint", "gene", "plasmid")
   missing_key   <- setdiff(key_cols, names(plate.tbl))
   if (length(missing_key) > 0) {
     usethis::ui_stop(
