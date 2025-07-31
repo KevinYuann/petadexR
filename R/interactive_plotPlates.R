@@ -71,7 +71,9 @@ interactive_plotPlates <- function(plate_tbl,
         .fill_raw, constructID, experiment, media, timepoint
       )
     )
-  sd <- crosstalk::SharedData$new(plate_df)
+
+  ## use highlight_key() so the object is data-frame-like (ggplot2 ≥ 3.5 friendly)
+  sd <- plotly::highlight_key(plate_df)   # carries its own SharedData internally
 
   ## ---- build ggplot --------------------------------------------------- ##
   p <- ggplot2::ggplot(
