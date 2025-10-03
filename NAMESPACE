@@ -3,6 +3,7 @@
 export(aggregatePlate)
 export(interactive_plotPlates)
 export(normalizePlate)
+export(plotActivity)
 export(plotPlate)
 export(plotPlateArray)
 export(plotPlates)
